@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+<head>
+
+	<title>Matching Game!</title>
+
+	<style type="text/css">
+	     #gameheader{text-align: center;}
+
+	     #gamehint{font-size: 20px;
+	     		   position: absolute;
+	     		   top: 70px;
+	     		   left: 150px;}
+
+	     #leftdiv{position: absolute;
+	              top: 120px;
+	              left: 150px;
+	              width: 500px;
+	              height: 500px;
+	              border-right: solid;}
+
+	     #rightdiv{position: absolute;
+	     	       top: 120px;
+	     	       left: 650px; 
+	     	       width: 500px; 
+	     	       height: 500px; 
+	     	       }
+	</style>
+
+</head>
+
+<body id="mybody">
+	
+	<h1 id="gameheader">Matching Game!</h1>
+	
+	<p id="gamehint">Click on the extra smiling face on the left.</p>
+    
+    <div id="leftdiv"></div>
+    
+    <div id="rightdiv"></div> 
+     
+    <script>
+
+    	var faces_number = 5;
+    	var level =0;
+
+    	var mybody = document.getElementById("mybody");
+    	var leftdiv = document.getElementById("leftdiv");
+    	var rightdiv = document.getElementById("rightdiv");
+    	    
+    	function clearDivs(){
+    		rightdiv.removeChild(document.getElementById("leftdiv_copy"));
+    		
+    		while(leftdiv.lastChild){
+    			leftdiv.removeChild(leftdiv.lastChild);
+    		}
+    	}
+
+        
+        function nextLevel(event){
+    		event.stopPropagation();
+    		level++;
+    		clearDivs();
+    		faces_number +=5;
+    		generateFace();
+    	}
+
+    	function gameOver(){
+    		alert("Game Over!");
+    		mybody.onclick = null;
+    		leftdiv.lastChild.onclick = null;
+
+    	}
+
+
+    	function generateFace(){
+    		
+    		var top, left;
+    	    
+    	    //console.log("faces_number : " + faces_number);
+    	    //console.log("level : " + level);
+    		
+    		for (var i = 1; i <= faces_number; i++)
+    		{
+    			top = Math.floor(Math.random() * 400);
+    			left = Math.floor(Math.random() * 400);
+    			
+    			myImg = document.createElement("img");
+    			myImg.src ="https://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+
+    			myImg.style.position = "absolute";
+    			myImg.style.top = top + "px";
+    			myImg.style.left = left + "px";
+    		    
+    		    leftdiv.appendChild(myImg);
+    		}
+
+
+    		faces_copy = leftdiv.cloneNode(true);
+    		faces_copy.id = "leftdiv_copy"
+    		faces_copy.removeChild(faces_copy.lastChild);
+    		rightdiv.appendChild(faces_copy);
+
+
+            extraImg = leftdiv.lastChild;
+           // extraImg.src = "smile2.png"; //this line for cheating only :D 
+            extraImg.onclick = nextLevel;
+
+            mybody.onclick = gameOver;
+
+            //console.log("leftdiv : " + leftdiv.childElementCount);
+    	    //console.log("rightdiv : " + rightdiv.firstChild.childElementCount);
+    	}
+
+    	//window.addEventListener("load", generateFace)
+    	mybody.onload = generateFace();
+
+
+    		
+
+    </script> 
+
+</body>
+
+</html>
